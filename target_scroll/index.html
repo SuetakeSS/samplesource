@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!--[if IE]>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+<![endif]-->
+<meta charset="utf-8">
+<meta http-equiv="content-language" content="ja">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sample</title>
+<style>
+.triggerNav{
+  list-style-type: none;
+  letter-spacing: -.4em;
+}
+.triggerNav li{
+  list-style-type: none;
+  letter-spacing: normal;
+  display: inline-block;
+  padding: 0 10px;
+}
+.targetArea{
+  height: 100vh;
+  width: 100%;
+}
+.targetArea:nth-child(even){background: #e6e6fa;}
+.targetArea:nth-child(odd){ background: #66cdaa; }
+</style>
+</head>
+<body>
+
+<div>
+  <ul class="triggerNav" id="triggerNav">
+    <li><a href=""><span>リンク１</span></a></li>
+    <li><a href=""><span>リンク２</span></a></li>
+    <li><a href=""><span>リンク３</span></a></li>
+    <li><a href=""><span>リンク４</span></a></li>
+    <li><a href=""><span>リンク５</span></a></li>
+    <li><a href=""><span>リンク６</span></a></li>
+    <li><a href=""><span>リンク７</span></a></li>
+  </ul>
+</div>
+
+<div class="targetArea targetObj">target Area 1</div>
+<div class="targetArea targetObj">target Area 2</div>
+<div class="targetArea targetObj">target Area 3</div>
+<div class="targetArea targetObj">target Area 4</div>
+<div class="targetArea targetObj">target Area 5</div>
+<div class="targetArea targetObj">target Area 6</div>
+<div class="targetArea targetObj">target Area 7</div>
+
+<script>
+
+;(function() {
+// smoothscroll
+  let smoothScroll = function (range) {
+  let position = 0,
+      progress = 0,
+      easeOut = function (p) {
+        return p * (2 - p);
+      };
+  let move = function () {
+    progress++;
+    position = range * easeOut(progress / 50);
+    window.scrollTo(0, position);
+    if (position < range) {
+      requestAnimationFrame(move);
+    }
+  };
+  requestAnimationFrame(move);
+};
+
+// triggerObj
+  let triggerList = document.getElementsByClassName('triggerNav')[0],
+      triggerObj = triggerList.getElementsByTagName('li'),
+      triggerLength = triggerObj.length;
+// targetObj
+  let targetObj = document.querySelectorAll('.targetObj'),
+      targetLength = targetObj.length;
+
+  for( let i = 0; i < triggerLength; i++) {
+
+    triggerObj[i].onclick = function(e){
+
+      e.preventDefault();
+
+      let st = targetObj[i].getBoundingClientRect().top;
+      window.scrollTo(0,st);
+      smoothScroll(st);
+
+    }
+
+  }
+
+})();
+
+</script>
+
+</body>
+</html>
